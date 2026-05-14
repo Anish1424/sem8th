@@ -1,0 +1,140 @@
+RMI Client Server
+
+RMI Client Server Java
+
+import java.rmi.*;
+
+public interface MyInterface extends Remote {
+
+    public String sayHello() throws RemoteException;
+}
+
+//why we used interface --> it act as contract/ channel between client and server
+// why object is not used --> Client should know only methods, not implementation details.
+
+//Why extends Remote? --> Tells Java these methods are remote methods. Remote is Marker interface in java.rmi package. without remote, RMI communication will fail because methods are not treated as remote methods.
+
+import java.rmi.*;
+import java.rmi.server.*;
+
+public class MyRemoteClass extends UnicastRemoteObject implements MyInterface {
+    //unicastRemoteObject : To make object remotely accessible in RMI.
+    public MyRemoteClass()
+            throws RemoteException {
+
+        super();//super() calls constructor of UnicastRemoteObject to initialize RMI remote object functionality.
+    }
+
+    public String sayHello()
+            throws RemoteException {
+
+        return "Hello, world!";
+    }
+}
+
+import java.rmi.*;
+import java.rmi.registry.*;
+
+public class MyServer {
+
+    public static void main(String[] args) {
+
+        try {
+
+            MyInterface obj = new MyRemoteClass();
+
+            LocateRegistry.createRegistry(1099);
+
+            Naming.rebind("rmi://localhost/MyRemoteClass",obj);
+
+            System.out.println("MyRemoteClass bound in registry");
+
+        } catch(Exception e) {
+
+            System.out.println(e);
+        }
+    }
+}
+
+import java.rmi.*;
+
+public class MyClient {
+
+    public static void main(String[] args) {
+
+        try {
+
+            MyInterface obj = (MyInterface) Naming.lookup("rmi://localhost/MyRemoteClass");
+
+            System.out.println(obj.sayHello());
+
+        } catch(Exception e) {
+            System.out.println(e);
+        }
+    }
+}
+
+/*Commands to run : 
+    javac *.java
+    in same termial , java MyServer
+    in another terminal : java MyClient
+
+*/
+/*
+Title : To implement multi-threaded client/server process communication using Java RMI.
+
+RMI stands for: Remote Method Invocation
+It allows: One Java program to call methods of another Java program running on another machine
+
+Simple Meaning - Client can call: Server methods remotely as if they are local methods.
+
+RMI is used to:
+    Create distributed applications
+    Enable client-server communication
+    Share remote objects over network
+
+Remote Interfacec - Declares remote methods
+Remote Object - Implements methods
+Stub - Client-side proxy
+Skeleton - Server-side gateway
+RMI Registry - Stores remote objects
+Client - Calls remote methods
+Server - Provides remote methods
+
+Why UnicastRemoteObject? --> Makes object: Accessible remotely
+
+Server:
+    Creates remote object
+    Registers object using:
+    Naming.rebind()
+    rebind() : Associates object with name in registry.
+
+Client:
+    Uses:
+    Naming.lookup() : to find remote object.
+    Calls remote method.
+    lookup() : Searches remote object from registry.
+
+
+
+COMPLETE EXECUTION FLOW:
+Compile Java Files
+        ↓
+Start rmiregistry(optional)
+        ↓
+Run Server
+        ↓
+Server registers object
+        ↓
+Run Client
+        ↓
+Client looks up object
+        ↓
+Registry returns stub
+        ↓
+Client calls remote method
+        ↓
+Server executes method
+        ↓
+Result returned to client
+*/
