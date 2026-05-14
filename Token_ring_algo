@@ -1,0 +1,70 @@
+Token Ring Algorithm
+
+class TokenRing:
+
+    def __init__(self, num_nodes):
+        self.num_nodes = num_nodes
+        self.nodes = [None] * num_nodes
+
+    def set_node(self, node_id, data):
+        self.nodes[node_id] = data
+
+    def run(self):
+
+        current_node = 0
+
+        for i in range(self.num_nodes):
+
+            token = self.nodes[current_node]
+
+            print(f"Node {current_node}: "
+                  f"Received token with data '{token}'")
+
+            print(f"Node {current_node}: "
+                  f"Processing data "
+                  f"'{self.nodes[current_node]}'")
+
+            # Pass token to next node
+            current_node = (current_node + 1) % self.num_nodes
+
+
+# Create ring
+token_ring = TokenRing(4)
+
+# Add data
+token_ring.set_node(0, "Data 1")
+token_ring.set_node(1, "Data 2")
+token_ring.set_node(2, "Data 3")
+token_ring.set_node(3, "Data 4")
+
+# Run algorithm
+token_ring.run()
+
+'''
+Termial : Python filename.py
+
+Title : Mutual Exclusion using Token Ring Algorithm
+Aim :To implement Token Ring based Mutual Exclusion Algorithm in Distributed Systems.
+
+Mutual Exclusion means: Only one process can access the critical section at a time.
+
+Critical Section (CS) is: Part of program where shared resource is accessed.
+
+Examples: Shared file , Printer ,Database ,Shared variable
+
+Without mutual exclusion: Multiple processes may access same resource simultaneously.This creates: Race Condition
+
+Token Ring Algorithm is used to achieve mutual exclusion in distributed systems.
+It uses: A special message called TOKEN
+Only process having token can enter critical section.
+
+Working of Token Ring Algorithm :
+Step 1 : Processes are arranged in Logical Ring
+    Example: P1 → P2 → P3 → P4 → P1
+Step 2 : Initially one process gets TOKEN.
+    Example:P1 has token
+Step 3 : If process wants to enter Critical Section:
+        It checks token availability.
+Step 4 : If process has token: It enters Critical Section.
+Step 5 : After completing work, Process passes token to next process.
+'''
