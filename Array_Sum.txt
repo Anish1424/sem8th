@@ -1,0 +1,84 @@
+Array Sum Java
+
+import java.rmi.*;
+
+public class MyClient {
+
+    public static void main(String[] args) {
+
+        try {
+
+            MyInterface obj = (MyInterface) Naming.lookup("rmi://localhost/MyRemoteClass");
+
+            System.out.println(obj.sayHello());
+
+        } catch(Exception e) {
+            System.out.println(e);
+        }
+    }
+}
+
+/*Commands to run : 
+    javac *.java
+    in same termial , java MyServer
+    in another terminal : java MyClient
+
+*/
+/*
+Title : To implement multi-threaded client/server process communication using Java RMI.
+
+RMI stands for: Remote Method Invocation
+It allows: One Java program to call methods of another Java program running on another machine
+
+Simple Meaning - Client can call: Server methods remotely as if they are local methods.
+
+RMI is used to:
+    Create distributed applications
+    Enable client-server communication
+    Share remote objects over network
+
+Remote Interfacec - Declares remote methods
+Remote Object - Implements methods
+Stub - Client-side proxy
+Skeleton - Server-side gateway
+RMI Registry - Stores remote objects
+Client - Calls remote methods
+Server - Provides remote methods
+
+Why UnicastRemoteObject? --> Makes object: Accessible remotely
+
+Server:
+    Creates remote object
+    Registers object using:
+    Naming.rebind()
+    rebind() : Associates object with name in registry.
+
+Client:
+    Uses:
+    Naming.lookup() : to find remote object.
+    Calls remote method.
+    lookup() : Searches remote object from registry.
+
+
+
+COMPLETE EXECUTION FLOW:
+Compile Java Files
+        ↓
+Start rmiregistry(optional)
+        ↓
+Run Server
+        ↓
+Server registers object
+        ↓
+Run Client
+        ↓
+Client looks up object
+        ↓
+Registry returns stub
+        ↓
+Client calls remote method
+        ↓
+Server executes method
+        ↓
+Result returned to client
+*/
