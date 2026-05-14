@@ -1,0 +1,100 @@
+Webservice 
+
+'''
+Aim : To create a simple web service and consume it using a distributed application.
+
+What is Web Service?
+A Web Service is:Communication between applications over network using HTTP.
+
+Applications exchange data using:JSON,XML
+
+Type Used in This Practical:RESTful Web Service
+
+using:
+    Python Flask
+    HTTP POST request
+
+Working of Practical
+Step 1: Server Creation
+    Server creates web service: /add
+
+    using Flask.
+
+Step 2: Client Sends Request
+    Client sends JSON data:
+    {
+        "a":10,
+        "b":20
+    }
+
+    to server using HTTP POST request.
+
+Step 3: Server Processes Request
+    Server: Receives data
+            Adds numbers
+            Creates result : 
+            10 + 20 = 30
+Step 4: Server Sends Response
+    Server returns JSON response:
+    {
+    "result":30
+    }
+Step 5: Client Displays Result
+        Client prints: 30
+
+Imports:
+
+Flask → create web service
+jsonify → send JSON response
+request → receive client data
+'''
+
+import requests
+
+# ,Create a data(python dictionary ) to send
+data = {
+    'a': 10,
+    'b': 20
+}
+
+# Send POST request
+response = requests.post(
+    'http://localhost:5000/add',
+    json=data
+)
+
+# Receive result
+result = response.json()
+
+# Print output
+print("Addition Result:",
+      result['result'])
+
+
+from flask import Flask, jsonify, request
+
+# Create Flask app
+app = Flask(__name__)
+
+# Create web service
+@app.route('/add', methods=['POST'])
+def add():
+
+    # Receive JSON data , get_json convert JSON into Python dictionary
+    data = request.get_json()
+
+    a = data['a']
+    b = data['b']
+
+    # Add numbers
+    result = a + b
+
+    # Create and Send response, jsonify convert python data to json ,beacuse we use REST API
+    answer = jsonify({'result': result})
+
+    return answer
+
+
+# Run server
+if __name__ == '__main__':
+    app.run()
