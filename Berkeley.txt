@@ -1,0 +1,60 @@
+Berkeley Algorithm
+
+def berkeley_algorithm(time_offsets):
+
+    # Calculate average offset
+    avg_offset = sum(time_offsets) / len(time_offsets)
+
+    # Adjust clocks
+    adjusted_clocks = [
+        time - avg_offset
+        for time in time_offsets
+    ]
+
+    return adjusted_clocks
+
+
+# Sample clock offsets
+time_offsets = [1.2, 0.5, -0.3, 2.1, -1.0]
+
+# Synchronize clocks
+adjusted_clocks = berkeley_algorithm(time_offsets)
+
+print("Adjusted Clocks:")
+print(adjusted_clocks)
+
+
+'''
+Aim : To implement the Berkeley Clock Synchronization Algorithm in Distributed Systems.
+
+Berkeley Algorithm is used for: Clock Synchronization
+It synchronizes clocks of all computers in a distributed system.
+
+Why Synchronization is Needed?
+--> In distributed systems:
+
+    Every computer has its own clock.
+    Clocks may show different times.
+
+    Example:
+
+    System	    Time
+    Computer A	10:00
+    Computer B	10:03
+    Computer C	09:58
+
+Different times create problems in: Banking, Distributed databases, Online transactions
+So synchronization is required.
+
+Berkeley Algorithm Working:Step-by-Step
+Step 1 : One computer becomes: Master Clock
+Step 2 : Master asks all systems for their times.
+Step 3 : Master calculates: Average Time
+Step 4 : Master sends adjustment values to all systems.
+Step 5 : All clocks update their times.
+
+4. Important Point
+Berkeley Algorithm:
+Does NOT use UTC directly.
+Uses average system time.
+'''
